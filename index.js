@@ -12,9 +12,9 @@ class character {
     constructor ({position, velocity, color = 'red', colorAttachBox = 'yellow', offset}){
         this.position = position,
         this.velocity = velocity,
-        this.width = 50
+        this.width = 50,
         this.height = 150,
-        this.lastKey
+        this.lastKey,
         this.attackBox = {
             position: {
                 x: this.position.x,
@@ -106,6 +106,19 @@ const keys = {
     s: {
         pressed: false
     },
+    A: {
+        pressed: false
+    },
+    D: {
+        pressed: false
+    },
+    W: {
+        pressed: false
+    },
+    S: {
+        pressed: false
+    },
+
 
     //Enemy Keys
     ArrowLeft: {
@@ -149,10 +162,14 @@ function animate(){
 
     //PLAYER MOVEMENT 
     if (keys.a.pressed && player.lastKey === 'a'){
-        player.velocity.x = -15
-    } else if (keys.d.pressed && player.lastKey === 'd'){
-        player.velocity.x = 15
-    }
+        player.velocity.x = -15} 
+    else if (keys.d.pressed && player.lastKey === 'd'){
+        player.velocity.x = 15}
+    else if (keys.A.pressed && player.lastKey === 'A'){
+        player.velocity.x = -15} 
+    else if (keys.D.pressed && player.lastKey === 'D'){
+        player.velocity.x = 15}
+
 
     //ENEMY MOVEMENT
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft'){
@@ -165,7 +182,13 @@ function animate(){
     if (keys.a.pressed && player.position.x <= 0){
         player.velocity.x = 0
     }
+    if (keys.A.pressed && player.position.x <= 0){
+        player.velocity.x = 0
+    }
     if (keys.d.pressed && player.position.x >= 900){
+        player.velocity.x = 0
+    }
+    if (keys.D.pressed && player.position.x >= 900){
         player.velocity.x = 0
     }
     if (keys.ArrowLeft.pressed && enemy.position.x <= 0){
@@ -191,38 +214,30 @@ function animate(){
     //     &&
     //     player.isAttacking)
     if ( 
-        combatZone({
-            combatZone1: player,
-            combatZone2: enemy
-        }) &&
-        player.isAttacking
-    )
+            combatZone({
+                combatZone1: player,
+                combatZone2: enemy
+                }) 
+            &&
+            player.isAttacking
+        )
         {
             player.isAttacking = false
             console.log('hit')
         }
-
     if ( 
         combatZone({
-                combatZone1: enemy,
-                combatZone2: player
-            }) &&
-            enemy.isAttacking
+            combatZone1: enemy,
+            combatZone2: player
+            }) 
+        &&
+        enemy.isAttacking
         )
-            { 
-                enemy.isAttacking = false
-                console.log('You fit like a 12 year who just found out Santa is not real')
-            }
-    
-
+        { 
+            enemy.isAttacking = false
+            console.log('You fit like a 12 year who just found out Santa is not real')
+        }
     }
-
-
-
-
-
-
-
 animate()
 
 window.addEventListener('keydown', (event) => {
@@ -241,6 +256,22 @@ window.addEventListener('keydown', (event) => {
         case 's': 
             player.velocity.y = 10
             break
+
+        case 'D': 
+            keys.D.pressed = true
+            player.lastKey = 'D'
+            break
+        case 'A': 
+            keys.A.pressed = true
+            player.lastKey = 'A'
+            break
+        case 'W': 
+            player.velocity.y = -10
+            break
+        case 'S': 
+            player.velocity.y = 10
+            break
+
 
         //Attack key for the Player
         case ' ':
@@ -281,8 +312,27 @@ window.addEventListener('keyup', (event) => {
             keys.w.pressed = false
             break
         case 's': 
-            keys.w.pressed = false
+            keys.s.pressed = false
             break
+
+        case 'D': 
+            keys.D.pressed = false
+            break
+        case 'A': 
+            keys.A.pressed = false
+            break
+        case 'W': 
+            keys.W.pressed = false
+            break
+        case 'S': 
+            keys.S.pressed = false
+            break
+
+
+
+
+
+
 
         case 'ArrowRight': 
             keys.ArrowRight.pressed = false
