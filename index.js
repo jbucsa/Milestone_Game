@@ -9,19 +9,24 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 const gravity = 0.5
 
 class character {
-    constructor ({position, velocity, color = 'red', colorAttachBox = 'yellow'}){
+    constructor ({position, velocity, color = 'red', colorAttachBox = 'yellow', offset}){
         this.position = position,
         this.velocity = velocity,
         this.width = 50
         this.height = 150,
         this.lastKey
         this.attackBox = {
-            position: this.position,
-            width: 100,
-            height: 50,
+            position: {
+                x: this.position.x,
+                y: this.position.y,
+            },
+            offset: offset,
+            width: 155,
+            height: 35,
         },
         this.color = color,
-        this.colorAttachBox = colorAttachBox
+        this.colorAttachBox = colorAttachBox,
+        this.isAttacking = false
     }
 
     draw(){
@@ -37,6 +42,8 @@ class character {
     
     update(){
         this.draw()
+        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y
         
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y // same as saying "this.position.y = this
@@ -45,6 +52,13 @@ class character {
             this.velocity.y = 0
         } else this.velocity.y += gravity
     }
+
+    attack(){
+        this.isAttacking = true
+        setTimeout (() => {
+            this.isAttacking = false
+        }, 100)
+    }
 }
 
 const player = new character ({
@@ -52,7 +66,12 @@ const player = new character ({
         x: 50, y:0},
     velocity: {
         x:0, y:0
-    }})
+    },
+    offset: {
+        x: 0,
+        y: 0
+    }
+})
 
 player.draw() //Shows player-character onscreen 
 
@@ -64,14 +83,17 @@ const enemy = new character ({
         x:0, y:0
     },
     color: 'blue',
-    colorAttachBox: 'white'
+    colorAttachBox: 'white',
+    offset: {
+        x: -100,
+        y: 0
+    }
 })
 
 enemy.draw() //Shows enemy-character onscreen 
 
-console.log(player)
-
 const keys = {
+    //Player keys
     a: {
         pressed: false
     },
@@ -84,19 +106,35 @@ const keys = {
     s: {
         pressed: false
     },
+
+    //Enemy Keys
     ArrowLeft: {
-        press: false
+        pressed: false
     },
     ArrowDown: {
-        press: false
+        pressed: false
     },  
     ArrowRight: {
-        press: false
+        pressed: false
     }, 
     ArrowUp: {
-        press: false
+        pressed: false
     }
 }
+
+//Combat Zone - This is where battles are won and enemies are destroyed
+//combatZone is just rectangles but sounds cooler. 
+function combatZone ({combatZone1, combatZone2})
+    {
+    return (combatZone1.attackBox.position.x + combatZone1.attackBox.width >= combatZone2.position.x 
+    && 
+    combatZone1.attackBox.position.x <= combatZone2.position.x + combatZone2.width
+    &&
+    combatZone1.attackBox.position.y + combatZone1.attackBox.height >= combatZone2.position.y
+    &&
+    combatZone1.attackBox.position.y <= combatZone2.position.y + combatZone2.height
+)}
+
 
 function animate(){
     window.requestAnimationFrame(animate) 
@@ -143,17 +181,47 @@ function animate(){
     // }
 
     //Detect for Collision Between Players
-    if (player.attackBox.position.x + player.attackBox.width >= enemy.position.x 
-        && 
-        player.attackBox.position.x <= enemy.position.x + enemy.width
-        &&
-        player.attackBox.position.y + player.attackBox.height >= enemy.position.y
-        &&
-        player.attackBox.position.y <= enemy.position.y + enemy.height)
+    // if (player.attackBox.position.x + player.attackBox.width >= enemy.position.x 
+    //     && 
+    //     player.attackBox.position.x <= enemy.position.x + enemy.width
+    //     &&
+    //     player.attackBox.position.y + player.attackBox.height >= enemy.position.y
+    //     &&
+    //     player.attackBox.position.y <= enemy.position.y + enemy.height
+    //     &&
+    //     player.isAttacking)
+    if ( 
+        combatZone({
+            combatZone1: player,
+            combatZone2: enemy
+        }) &&
+        player.isAttacking
+    )
         {
+            player.isAttacking = false
             console.log('hit')
         }
-}
+
+    if ( 
+        combatZone({
+                combatZone1: enemy,
+                combatZone2: player
+            }) &&
+            enemy.isAttacking
+        )
+            { 
+                enemy.isAttacking = false
+                console.log('You fit like a 12 year who just found out Santa is not real')
+            }
+    
+
+    }
+
+
+
+
+
+
 
 animate()
 
@@ -174,6 +242,11 @@ window.addEventListener('keydown', (event) => {
             player.velocity.y = 10
             break
 
+        //Attack key for the Player
+        case ' ':
+            player.attack()
+            break
+
         case 'ArrowRight': 
             keys.ArrowRight.pressed = true
             enemy.lastKey = 'ArrowRight'
@@ -188,6 +261,10 @@ window.addEventListener('keydown', (event) => {
         case 'ArrowDown': 
             enemy.velocity.y = 10
             break
+        case 'Shift':
+            enemy.isAttacking = true
+            break
+            
     }
     console.log(event.key);
 })
