@@ -7,14 +7,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="index.js" defer></script>
     <title>Fighting game</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 
 <body>
-    <canvas>
+    <div style="position: relative;" > 
+        <div style="position: absolute; display: flex; width: 1000px; align-items: center; padding: 20px;">
 
+            <div style="position: relative; height: 50px; width: 100%; display: flex; justify-content: flex-end;">
+                <div style="background-color: yellow; height: 50px; width: 100%">
+                <!-- Player Health -->
+                </div>
+                <div id="playerHealth" style="position: absolute; background: blue; top: 0; right: 0; bottom: 0; width: 100%;">
+                </div>
+            </div>
+
+            <div style="background-color: red; height: 100px; width: 100px; flex-shrink: 0;">
+            <!-- Timer -->
+            </div>
+
+            <div style="position: relative; height: 50px; width: 100%;">
+                <div style="background-color: yellow; height: 50px;     ">
+                <!-- Enemy Health -->
+                </div>
+                <div id="enemyHealth" style="position: absolute; background: blue; top: 0; right: 0; bottom: 0; left: 0; ">
+                </div>
+            </div>
+        
+        </div>
+        <canvas>
+        </canvas>
+    <div>
     
     
-    <script type="module" src="index.js"> </script>
+    <script  src="index.js"> </script>
 </body>
 
 </html>
