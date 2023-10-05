@@ -1,4 +1,4 @@
-//1:26:57
+//1:40:02
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -10,64 +10,14 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.5
 
-class character {
-    constructor ({position, velocity, color = 'red', colorAttachBox = 'yellow', offset}){
-        this.position = position;
-        this.velocity = velocity;
-        this.width = 50;
-        this.height = 150;
-        this.lastKey = null; // Initialize lastKey to null
-        this.attackBox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y,
-            },
-            offset: offset,
-            width: 155,
-            height: 35,
-        };
-        this.health = 100;
-        this.color = color;
-        this.colorAttachBox = colorAttachBox;
-        this.isAttacking = false; // Initialize isAttacking to false
-    }
+const background = new sprite({
+    position: {
+        x:0, y:0
+    },
+    imageScr: 'assets/img/background.png'
+});
 
-    draw(){
-        c.fillStyle = this.color;
-        c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        
-        //Attack Box
-        if (this.isAttacking) {
-            c.fillStyle = this.colorAttachBox;
-            c.fillRect (
-              this.attackBox.position.x,
-              this.attackBox.position.y,
-              this.attackBox.width,
-              this.attackBox.height)
-        }
-    }
-   
-    update(){
-        this.draw()
-        this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-        this.attackBox.position.y = this.position.y;
-        
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y; // same as saying "this.position.y = this
-        
-        if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-            this.velocity.y = 0;
-        } else this.velocity.y += gravity;
-    }
-
-    attack(){
-        this.isAttacking = true;
-        setTimeout (() => {
-            this.isAttacking = false;
-        }, 100);
-    }
-}
-
+//Character properties and starting position
 const player = new character ({
     position: {
         x: 50, y:0},
@@ -79,7 +29,7 @@ const player = new character ({
         y: 0
     }
 });
-
+//Enemy properties and starting position
 const enemy = new character ({
     position: {
         x: 900, y: 0
@@ -96,7 +46,7 @@ const enemy = new character ({
 });
 
 
-
+//Game keys
 const keys = {
     //Player keys
     a: {
@@ -160,11 +110,48 @@ function combatZone ({combatZone1, combatZone2}){
         );
     }
 
+//Timer    
+// Set the initial countdown value
+let timeJS = 60
+let timerID
 
+const element = document.getElementById('timerHTML');
+timerID = setInterval(function() {
+    if(timeJS >= 0)
+    element.innerHTML =  timeJS--;
+    }, 1000);
+
+function determineWinner({player, enemy, timerID}) {
+    clearInterval(timerID);
+    document.getElementById("displayText").style.display = "flex";
+    
+    if (player.health === enemy.health){ 
+    console.log('tie');
+    document.getElementById("displayText").innerHTML = "Tie";};
+    
+    if (player.health > enemy.health){ 
+    console.log('player wins');
+    document.getElementById("displayText").innerHTML = "Player Wins";};
+
+    if (player.health < enemy.health){ 
+    console.log('enemy win');
+    document.getElementById("displayText").innerHTML = "Enemy Wins";};
+}
+
+function winnerMessage(){
+    if (timeJS === 0){
+        determineWinner({player, enemy, timerID});
+    };
+}
+
+
+
+//This is the animation loop!!!
 function animate(){
     window.requestAnimationFrame(animate); 
     c.fillStyle = 'black'; //this overrides the c.fillStyle = 'red' in the "class character" 
     c.fillRect(0 , 0, canvas.width, canvas.height); //Means we are not drawing/resenting anything when we request this. This prevents the characters movement from framing ontop of itself repeatly. 
+    background.update()
     player.update();
     enemy.update();
 
@@ -181,7 +168,6 @@ function animate(){
         player.velocity.x = -15;} 
     else if (keys.D.pressed && player.lastKey === 'D'){
         player.velocity.x = 15;}
-
 
     //ENEMY MOVEMENT
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft'){
@@ -238,8 +224,15 @@ function animate(){
             if (playerHealthBar) {
             playerHealthBar.style.width = player.health + '%';
             }
-        }
+        }  
+    if (enemy.health == 0 || player.health == 0) {
+        determineWinner({player, enemy, timerID});
+        return;
     }
+}
+
+
+winnerMessage()
 animate()
 
 window.addEventListener('keydown', (event) => {
@@ -298,7 +291,6 @@ window.addEventListener('keydown', (event) => {
             enemy.attack();
             break;        
     }
-    console.log(event.key);
 })
 
 window.addEventListener('keyup', (event) => {
@@ -343,5 +335,4 @@ window.addEventListener('keyup', (event) => {
             enemy.velocity.y = false;
             break;
     }
-    console.log(event.key);
 })

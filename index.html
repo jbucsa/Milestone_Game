@@ -26,8 +26,17 @@
                 </div>
             </div>
 
-            <div style="background-color: red; height: 100px; width: 100px; flex-shrink: 0;">
-            <!-- Timer -->
+            <div 
+            id="timerHTML"
+            style="
+            background-color: red;
+            height: 100px;
+            width: 100px; 
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            ">
             </div>
 
             <div style="position: relative; height: 50px; width: 100%;">
@@ -42,9 +51,11 @@
         <canvas>
         </canvas>
     <div>
-    
-    
-    <script  src="index.js"> </script>
+
+    <div id="displayText" style="position: absolute; color: white; align-items: center; justify-content: center; top: 0; right: 0; bottom: 0; left: 0; display: none;">
+    </div>
+    <script src="js/classes.js"> </script>
+    <script src="index.js"> </script>
 </body>
 
 </html>
