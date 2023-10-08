@@ -22,11 +22,12 @@ const element = document.getElementById('timerHTML');
 timerID = setInterval(function() {
     if(timeJS >= 0)
     element.innerHTML =  timeJS--;
+    winnerMessage(timeJS)
     }, 1000);
 
 function winnerMessage(timeJS){
-        if (timeJS === 0){
-            determineWinner();
+        if (timeJS == -1){
+            determineWinner({player, enemy});
         };
     }
     
@@ -35,16 +36,15 @@ function winnerMessage(timeJS){
 function determineWinner({player, enemy, timerID}) {
     clearInterval(timerID);
     document.getElementById("displayText").style.display = "flex";
-    
+    document.getElementById("restartButton").style.display = "flex"
+
     if (player.health === enemy.health){ 
-    console.log('tie');
     document.getElementById("displayText").innerHTML = "Tie";};
+
     if (player.health > enemy.health){ 
-    console.log('player wins');
     document.getElementById("displayText").innerHTML = "Player Wins";};
 
     if (player.health < enemy.health){ 
-    console.log('enemy win');
     document.getElementById("displayText").innerHTML = "Enemy Wins";};
 }
 
