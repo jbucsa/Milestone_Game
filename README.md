@@ -2,21 +2,40 @@
 Here's a basic template for a README.md file for your Git repository that holds a browser game. You can customize it to fit your specific game and project details:
 
 
-# Game Name
+# Fighter's Attack
 
-![Game Screenshot](screenshot.png)
+![Game Screenshot](assets/img/READMEImage/StartScreen.jpg)
 
 ## Description
 
-Provide a brief and engaging description of your browser game. Explain what the game is about, its objective, and any unique features that make it interesting.
+Fighter's Attack is two player fighting game for PC only. 
+Both plays will fight have 60 second to defeat one another. Upon 60 seconds, the player with the lower life bar will lose. 
 
 
 ## Play the Game
 
-Include a link or instructions on how to play the game directly in the browser. If the game is hosted online, provide a live demo link.
+To start the game, press any key. 
+
+Move toward your enemy to strike them. If your player is within striking range of your attack, your enemy will lose health (this will be noticed as either health bar will decrease). 
 
 ### Controls
-- Explain how to play the game, including controls and any special instructions.
+- Controls for Player 1 (the player to the left)
+
+Player 1
+    (a) - Move player to the left
+    (d) - Move player to the right
+    (w) - Make player jump up
+    (s) - Make player jump down
+    (SPACEBAR) - Attack to the right
+
+Player 2
+    (RightArrow) - Move player to the left
+    (LefttArrow) - Move player to the right
+    (UpArrow) - Make player jump up
+    (DownArrow) - Make player jump down
+    (/) - Attack to the right
+
+
 
 ## Features
 

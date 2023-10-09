@@ -42,9 +42,9 @@ function determineWinner({player, enemy, timerID}) {
     document.getElementById("displayText").innerHTML = "Tie";};
 
     if (player.health > enemy.health){ 
-    document.getElementById("displayText").innerHTML = "Player Wins";};
+    document.getElementById("displayText").innerHTML = "Player 1 Wins!!!!";};
 
     if (player.health < enemy.health){ 
-    document.getElementById("displayText").innerHTML = "Enemy Wins";};
+    document.getElementById("displayText").innerHTML = "Player 2 Wins!!!!";};
 }
 

@@ -1,4 +1,3 @@
-//3:02:31
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
@@ -6,8 +5,8 @@ canvas.width = 1000
 canvas.height = 576 
 
 c.fillRect(0, 0, canvas.width, canvas.height)
-
-const gravity = 0.5
+  
+const gravity = 0.2
 
 const background = new sprite({
     position: {
@@ -27,7 +26,7 @@ const shop = new sprite({
 
 
 //Character properties and starting position
-const player = new character ({
+const player = new character ({ 
     position: {
         x: 100, y:0},
     velocity: {
